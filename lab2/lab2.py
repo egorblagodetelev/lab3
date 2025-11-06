@@ -3,12 +3,13 @@ import random
 import xml.etree.ElementTree as ET
 import time
 
-books_file = 'books-en.csv'
-year_limit_1 = 1991
-year_limit_2 = 1995
+
+BOOKS_FILE = 'books-en.csv'
+YEAR_LIMIT_1 = 1991
+YEAR_LIMIT_2 = 1995
 
 def open_csv():
-        return open(books_file, 'r', encoding='windows-1251')
+        return open(BOOKS_FILE, 'r', encoding='windows-1251')
 
 # 1) Подсчет количества длинных записей
 
@@ -37,7 +38,7 @@ def search():
         for row in table:
             if search.lower() in row[author_index].lower():
                 year = int(row[year_index])
-                if year_limit_1 <= year <= year_limit_2:
+                if YEAR_LIMIT_1 <= year <= YEAR_LIMIT_2 :
                     print(f'{row[author_index]} — {row[title_index]} ({year} год)')
 
 # 3) Генерация ссылки
@@ -51,12 +52,12 @@ def generate_links():
         title_i = header.index('Book-Title')
         year_i = header.index('Year-Of-Publication')
 
-        chosen = random.sample(table, min(20, len(table)))
+        chosen = random.sample(table, 20)
         with open('bibliography.txt', 'w', encoding='windows-1251') as out:
             for i, row in enumerate(chosen, start=1):
                 author = row[author_i]
                 title = row[title_i]
-                year = row[year_i].split('.')[-1] if row[year_i] else ''
+                year = row[year_i]
                 line = f'{i}. {author}. {title} - {year}'
                 out.write(line + '\n')
     print('файл создан\n')
